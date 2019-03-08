@@ -1,7 +1,5 @@
 from hazm import *
 
-from preprocess.dataset_reader import DatasetReader
-
 
 class Preprocessor:
     def __init__(self, raw_tweet):

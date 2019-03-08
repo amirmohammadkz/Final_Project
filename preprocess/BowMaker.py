@@ -1,7 +1,3 @@
-import operator
-
-import hazm
-
 from preprocess.dataset_reader import DatasetReader
 from preprocess.preprocessor import Preprocessor
 
@@ -33,8 +29,14 @@ if __name__ == "__main__":
             bowMaker.add_tweet(stemmed)
         print("generating bow...")
         bow = bowMaker.get_bow()
-        bow_file = open("../bows/" + name, "w")
+        bow_file = open("../bows/" + name, "w", encoding="utf8")
         print("saving bow...")
         for key in bow.keys():
-            bow_file.write(key + "," + bow[key] + "\n")
+            try:
+                bow_file.write(key + "," + str(bow[key]) + "\n")
+            except Exception as e:
+                print(e)
+                print(key)
+                print(bow[key])
+                print("#####")
         bow_file.close()
