@@ -7,7 +7,7 @@ class Preprocessor:
     def __init__(self, raw_tweet):
         self.raw_tweet = raw_tweet
 
-    def get_clean_tweet(self):
+    def get_cleaned_tweet(self):
         normalizer = Normalizer()
         normalized = normalizer.normalize(self.raw_tweet)
         tokenized = word_tokenize(normalized)
@@ -24,7 +24,7 @@ if __name__ == "__main__":
     tweet = mehdi[0]
 
     preprocessor = Preprocessor(tweet)
-    cleaned = preprocessor.get_clean_tweet()
+    cleaned = preprocessor.get_cleaned_tweet()
     print("original")
     print(tweet)
     print("##########")

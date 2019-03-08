@@ -1,3 +1,5 @@
+import operator
+
 import hazm
 
 from preprocess.dataset_reader import DatasetReader
@@ -21,10 +23,18 @@ class BowMaker:
 
 if __name__ == "__main__":
     dataset_reader = DatasetReader("../datasets")
-    mehdi = dataset_reader.read_file(dataset_reader.get_file_names()[0])
-    bowMaker = BowMaker()
-    for tweet in mehdi:
-        stemmed = Preprocessor(tweet).get_clean_tweet().get("stemmed")
-        bowMaker.add_tweet(stemmed)
-    bow = bowMaker.get_bow()
-    print(bow)
+    print("dataset read")
+    for name in dataset_reader.get_file_names():
+        print(name + " tweets...")
+        tweets = dataset_reader.read_file(name)
+        bowMaker = BowMaker()
+        for tweet in tweets:
+            stemmed = Preprocessor(tweet).get_cleaned_tweet().get("stemmed")
+            bowMaker.add_tweet(stemmed)
+        print("generating bow...")
+        bow = bowMaker.get_bow()
+        bow_file = open("../bows/" + name, "w")
+        print("saving bow...")
+        for key in bow.keys():
+            bow_file.write(key + "," + bow[key] + "\n")
+        bow_file.close()
