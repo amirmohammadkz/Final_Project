@@ -14,11 +14,15 @@ if __name__ == "__main__":
     for name in dataset_reader.get_file_names():
         print(name + " tweets...")
         tweets = dataset_reader.read_file(name)
+        print("some tweets:")
+        print(tweets[:2])
         bowMaker = BowMaker()
         for tweet in tweets:
-            stemmed = Preprocessor(tweet).get_cleaned_tweet().get("stemmed")
-            bowMaker.add_tweet(stemmed)
+            tokenized = Preprocessor(tweet).get_cleaned_tweet().get("tokenized")
+            # print(tokenized)
+            bowMaker.add_tweet(tokenized)
         print("generating bow...")
+        bowMaker.remove_extra_words()
         bow = bowMaker.get_bow()
         bow_file = open("../bows/" + name, "w", encoding="utf8")
         print("saving bow...")

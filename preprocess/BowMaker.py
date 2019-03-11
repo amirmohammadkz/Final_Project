@@ -13,6 +13,16 @@ class BowMaker:
             else:
                 self.bow[word] += 1
 
+    def remove_extra_words(self):
+        pruned_items_no_rabt = {k: self.bow.get(k) for k in set(self.bow) if
+                                k not in ["باری", "ولی", "هم", "نیز", "لیکن", "که", "زیرا", "خواه", "پس", "اما", "تا",
+                                          "چه",
+                                          "چون", "نه", "اگر", "پس", "یا", "و"]}
+        pruned_items_no_rabt_no_ezafi = {k: self.bow.get(k) for k in set(pruned_items_no_rabt) if
+                                         k not in [" ", "نیز", "در", "با", "ترین", "تر", "برای", "از", "به", "را"]}
+        self.bow = pruned_items_no_rabt_no_ezafi
+        return True
+
     def get_bow(self):
         return self.bow
 
@@ -25,8 +35,8 @@ if __name__ == "__main__":
         tweets = dataset_reader.read_file(name)
         bowMaker = BowMaker()
         for tweet in tweets:
-            stemmed = Preprocessor(tweet).get_cleaned_tweet().get("stemmed")
-            bowMaker.add_tweet(stemmed)
+            tokenized = Preprocessor(tweet).get_cleaned_tweet().get("tokenized")
+            bowMaker.add_tweet(tokenized)
         print("generating bow...")
         bow = bowMaker.get_bow()
         bow_file = open("../bows/" + name, "w", encoding="utf8")

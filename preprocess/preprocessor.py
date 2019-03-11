@@ -10,11 +10,17 @@ class Preprocessor:
     def get_cleaned_tweet(self):
         normalizer = Normalizer()
         normalized = normalizer.normalize(self.raw_tweet)
-        tokenized = word_tokenize(normalized)
         stemmer = Stemmer()
-        stemmed = [stemmer.stem(word) for word in tokenized]
+        stemmed = stemmer.stem(normalized)
+        # stemmed = [stemmer.stem(word) for word in normalized]
+        cleaned_stemmed = stemmed.replace(".", "")
+        cleaned_stemmed = cleaned_stemmed.replace("؟", "")
+        cleaned_stemmed = cleaned_stemmed.replace("!", "")
+        # cleaned_stemmed = cleaned_stemmed.replace("؛", "")
+        # cleaned_stemmed = cleaned_stemmed.replace(":", "")
+        tokenized = word_tokenize(cleaned_stemmed)
         lemmatizer = Lemmatizer()
-        lemmatized = [lemmatizer.lemmatize(word) for word in stemmed]
+        lemmatized = [lemmatizer.lemmatize(word) for word in tokenized]
         return {"lemmatized": lemmatized, "stemmed": stemmed, "tokenized": tokenized, "normalized": normalized}
 
 
@@ -33,3 +39,4 @@ if __name__ == "__main__":
         print(key)
         print(cleaned[key])
         print("##########")
+    print(Stemmer().stem(word=" باید گیفش رو ساخت تا تو مواقع لازم استفاده کردی"))
