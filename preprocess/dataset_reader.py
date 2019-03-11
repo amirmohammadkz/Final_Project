@@ -13,9 +13,12 @@ class DatasetReader:
         # return data
         return open(self.root_path + "/" + file_name, "r", encoding="utf8")
 
-    def read_file(self, file_name):
+    def read_file(self, file_name, double_enter=True):
         raw_file = self.__get_file(file_name)
-        return ("".join(raw_file.readlines())).split("\n\n")
+        if double_enter:
+            return ("".join(raw_file.readlines())).split("\n\n")
+        else:
+            return raw_file.readlines()
 
 
 if __name__ == "__main__":
