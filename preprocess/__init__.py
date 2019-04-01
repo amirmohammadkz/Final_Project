@@ -9,6 +9,7 @@ from preprocess.dataset_reader import DatasetReader
 from preprocess.preprocessor import Preprocessor
 
 if __name__ == "__main__":
+    grams = 3
     dataset_reader = DatasetReader("../datasets")
     print("dataset read")
     for name in dataset_reader.get_file_names():
@@ -19,16 +20,21 @@ if __name__ == "__main__":
         bowMaker = BowMaker()
         for tweet in tweets:
             tokenized = Preprocessor(tweet).get_cleaned_tweet().get("tokenized")
+            if grams > 1:
+                tokenized = [" ".join(tokenized[i:i + grams]) for i in range(len(tokenized) - grams + 1)]
             # print(tokenized)
             bowMaker.add_tweet(tokenized)
         print("generating bow...")
         bowMaker.remove_extra_words()
         bow = bowMaker.get_bow()
-        bow_file = open("../bows/" + name, "w", encoding="utf8")
+        bow_file = open("../bows3/" + name, "w", encoding="utf8")
         print("saving bow...")
         for key in bow.keys():
             try:
-                bow_file.write(key + "," + str(bow[key]) + "\n")
+                if "," in key:
+                    print("comma key:" + key)
+                else:
+                    bow_file.write(key + "," + str(bow[key]) + "\n")
             except Exception as e:
                 print(e)
                 print(key)

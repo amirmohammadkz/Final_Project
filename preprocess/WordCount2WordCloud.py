@@ -1,5 +1,5 @@
 from persian_wordcloud.wordcloud import PersianWordCloud, add_stop_words
-import langdetect
+# import langdetect
 
 
 def create_word_cloud(x="result.png"):
@@ -53,8 +53,11 @@ def create_word_cloud(x="result.png"):
 def saveWordRepeatForWordCloud(sorted_list):
     bw = open("word_repeat_word_cloud", "w", encoding="utf8")
     for wordTuple in sorted_list:
-        for i in range(wordTuple[1]):
-            bw.write(wordTuple[0] + "\n")
+        try:
+            for i in range(wordTuple[1]):
+                bw.write(wordTuple[0] + "\n")
+        except Exception:
+            print(wordTuple)
     bw.close()
 
 
@@ -69,7 +72,7 @@ if __name__ == "__main__":
         word = line.split(",")[0]
         count = int(line.split(",")[1])
         try:
-            langdetect.detect(word)
+            # langdetect.detect(word)
             cleaned_word_count.append((word, count))
             # if langdetect.detect(word) in ("fa","ar"):
             # else:
@@ -80,5 +83,5 @@ if __name__ == "__main__":
 
     # word_count = [(line.split(",")[0], int(line.split(",")[1])) for line in word_count if
     #               langdetect.detect(line.split(",")[0] == "fa")]
-    saveWordRepeatForWordCloud(word_count)
+    # saveWordRepeatForWordCloud(cleaned_word_count)
     create_word_cloud()
