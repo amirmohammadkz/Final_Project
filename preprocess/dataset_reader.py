@@ -12,6 +12,13 @@ class DatasetReader:
     def get_file_names(self):
         return os.listdir(self.root_path)
 
+    def get_nested_file_names(self):
+        paths = []
+        for path, subdirs, files in os.walk(self.root_path):
+            if files:
+                paths.append((path, files))
+        return paths
+
     def __get_file(self, file_name, pandas=False, header=None):
         # data = pd.read_csv(self.root_path+"/"+file_name, sep=" ", header=None)
         # return data
@@ -21,7 +28,8 @@ class DatasetReader:
         if not pandas:
             return open(path, "r", encoding="utf8")
         else:
-            return pd.read_csv(path, error_bad_lines=False, engine="python", encoding="utf8", names=header)
+            return pd.read_csv(path, error_bad_lines=False, engine="python", encoding="utf8", names=header,
+                               na_filter=False, quoting=3)
 
     def read_file(self, file_name, double_enter=True):
         raw_file = self.__get_file(file_name)
@@ -40,6 +48,7 @@ class DatasetReader:
 
 
 if __name__ == "__main__":
-    x = DatasetReader("../bows")
-    mehdi = x.read_csv_file(x.get_file_names()[0])
-    print(mehdi)
+    x = DatasetReader("../ngrams")
+    x.get_nested_file_names()
+    # mehdi = x.read_csv_file(x.get_file_names()[0])
+    # print(mehdi)
