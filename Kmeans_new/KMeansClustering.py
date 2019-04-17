@@ -1,4 +1,4 @@
-from Kmeans.OneHotEncoder import OneHotGenerator
+from Kmeans_old.OneHotEncoder import OneHotGenerator
 from preprocess import DatasetReader
 import numpy as np
 from sklearn.cluster import KMeans
@@ -7,7 +7,7 @@ if __name__ == "__main__":
     one_hot_encoder = OneHotGenerator("../word_count")
     one_hot_list = one_hot_encoder.make_one_hot()
     one_hot_list_size = len(one_hot_list)
-    dataset_reader = DatasetReader("../bows")
+    dataset_reader = DatasetReader("../ngrams/bow1/E_remove_extra")
     file_names = dataset_reader.get_file_names()
     person_dict = {}
     for file_name in file_names:

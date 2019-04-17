@@ -25,7 +25,7 @@ class WordCountMaker:
 
 
 if __name__ == "__main__":
-    dataset_reader = DatasetReader("../bows")
+    dataset_reader = DatasetReader("../ngrams/bow1/E_remove_extra")
     print("bow read")
     wordCountMaker = WordCountMaker()
     for name in dataset_reader.get_file_names():
