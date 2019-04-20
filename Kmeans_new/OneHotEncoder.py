@@ -3,12 +3,11 @@ import pandas as pd
 
 
 class OneHotGenerator:
-    def __init__(self, source):
+    def __init__(self):
         self.oneHotWordsDF = pd.DataFrame()
-        self.source = source
 
-    def make_one_hot(self, min_count=2):
-        file = pd.read_pickle(self.source)
+    def make_one_hot(self, source, min_count=2):
+        file = pd.read_pickle(source)
         self.oneHotWordsDF = self.oneHotWordsDF.append(file.loc[file["count"] >= min_count])
         self.oneHotWordsDF = self.oneHotWordsDF.append({'word': "unknown_words", 'count': None}, ignore_index=True)
         dummies = pd.get_dummies(self.oneHotWordsDF['word'], prefix='word')
@@ -31,12 +30,16 @@ class OneHotGenerator:
         on_hot_df = row.drop(['word', 'count'], axis=1)
         return np.array(on_hot_df)[0]
 
-    # def save_one_hot_df(self):
+    def save_one_hot_df(self, dest):
+        self.oneHotWordsDF.to_pickle(dest)
+
+    def load_one_hot_df(self, source):
+        self.oneHotWordsDF = pd.read_pickle(source)
 
 
 if __name__ == "__main__":
-    oneHotGenerator = OneHotGenerator("../tfidf/bow1/E_remove_extra/word_count.pkl")
-    x = oneHotGenerator.make_one_hot()
+    oneHotGenerator = OneHotGenerator()
+    x = oneHotGenerator.make_one_hot("../tfidf/bow1/E_remove_extra/word_count.pkl")
     print(oneHotGenerator.get_one_hot_vector("سلام"))
     print(oneHotGenerator.get_one_hot_vector("بستن"))
     print(oneHotGenerator.get_one_hot_vector("شیشسیشسیشسیشسیسش"))
