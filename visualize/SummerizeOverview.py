@@ -167,7 +167,7 @@ class Sumerizer:
 if __name__ == "__main__":
     summerizer = Sumerizer(DatasetReader("../datasets_V2"))
    # summerizer.generate_person_tweet_count_chart()
-    summerizer.generate_word_of_each_tweet_chart()
-   # summerizer.generate_person_word_count_chart(root_path='../tfidf/bow1/')
-   # summerizer.generate_person_unique_word_count_chart(root_path='../tfidf/bow1/')
+   # summerizer.generate_word_of_each_tweet_chart()
+    summerizer.generate_person_word_count_chart(root_path='../tfidf_old/bow1/')
+    summerizer.generate_person_unique_word_count_chart(root_path='../tfidf_old/bow1/')
    # summerizer.generate_unique_words_count_chart(root_path="../bows")
