@@ -13,16 +13,6 @@ class BowMaker:
             else:
                 self.bow[word] += 1
 
-    def remove_extra_words(self):
-        pruned_items_no_rabt = {k: self.bow.get(k) for k in set(self.bow) if
-                                k not in ["باری", "ولی", "هم", "نیز", "لیکن", "که", "زیرا", "خواه", "پس", "اما", "تا",
-                                          "چه",
-                                          "چون", "نه", "اگر", "پس", "یا", "و"]}
-        pruned_items_no_rabt_no_ezafi = {k: self.bow.get(k) for k in set(pruned_items_no_rabt) if
-                                         k not in [" ", "نیز", "در", "با", "ترین", "تر", "برای", "از", "به", "را"]}
-        self.bow = pruned_items_no_rabt_no_ezafi
-        return True
-
     def get_bow(self):
         return self.bow
 

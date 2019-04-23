@@ -16,22 +16,23 @@ class TF_IDF:
             bow['TF'] = (bow['count'] + 0.0) / bow['count'].sum()
 
     def add_IDF(self):
+        # todo: its to slow. refactor it
         word_list = [word for bow in self.bow_list for word in bow['word']]
         word_set = set(word_list)
         print(len(word_set))
-        word_accours = {}
+        word_accords = {}
         for word in word_set:
             count = 0
             for bow in self.bow_list:
                 if word in bow['word'].values:
                     count += 1
-            word_accours[word] = count
+            word_accords[word] = count
             if count == 0:
                 print("###########################")
                 print(word)
                 print("###########################")
         for bow in self.bow_list:
-            bow['IDF'] = bow.apply(lambda row: math.log((len(self.bow_list) / word_accours[row.word])), axis=1)
+            bow['IDF'] = bow.apply(lambda row: math.log((len(self.bow_list) / word_accords[row.word])), axis=1)
 
     def add_TFIDF(self):
         for bow in self.bow_list:

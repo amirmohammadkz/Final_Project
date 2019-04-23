@@ -1,7 +1,6 @@
 import os
 import sys
 
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)))
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -14,7 +13,8 @@ if __name__ == "__main__":
     root_input = "../datasets"
     root_output = "../ngrams"
     # todo: reform options and utilize it
-    options = ["A_original", "B_stem", "C_remove_punc", "D_remove_rabt", "E_remove_extra"]
+    options = ["A_original", "B_normalized", "C_stem", "D_remove_punc", "E_remove_rabt", "F_remove_extra",
+               "G_remove_unrelated"]
     ###########################################
 
     dataset_reader = DatasetReader(root_input)
@@ -34,6 +34,7 @@ if __name__ == "__main__":
             grams_tokenized = {}
             for gram in grams:
                 for level, tokenized in enumerate(process):
+                    # print(len(options))
                     bowMakers[(gram, options[level])].add_tweet(
                         [" ".join(tokenized[i:i + gram]) for i in range(len(tokenized) - gram + 1)])
         print("generating bow...")

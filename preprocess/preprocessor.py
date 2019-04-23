@@ -28,7 +28,7 @@ class Preprocessor:
         return {"lemmatized": lemmatized, "stemmed": stemmed, "tokenized": tokenized, "normalized": normalized}
 
     def clean_tweet(self, raw_tweet, normalize=True, stem=True, remove_punc=True, tokenize=True, remove_rabt=True,
-                    remove_extra=True):
+                    remove_extra=True, remove_unrelated=True):
         process = []
         tweet = raw_tweet
         process.append(tweet)
@@ -53,8 +53,10 @@ class Preprocessor:
             process.append(self.remove_rabt(process[-1]))
         if remove_extra:
             process.append(self.remove_ezafe(process[-1]))
+        if remove_unrelated:
+            process.append(self.remove_unrelated(process[-1]))
 
-        x= all([process[0]==process])
+        x = all([process[0] == process])
         if process[0] != process[1]:
             print(process[0])
             print(process[1])
@@ -68,7 +70,30 @@ class Preprocessor:
 
     def remove_ezafe(self, word_list):
         return [word for word in word_list if
-                word not in [" ", "نیز", "در", "با", "ترین", "تر", "برای", "از", "به", "را"]]
+                word not in [" ", "نیز", "در", "با", "ترین", "تر", "برای", "از", "به", "را", "رو"]]
+
+    def remove_unrelated(self, word_list):
+        final = []
+        for word in word_list:
+            add = True
+            if word[:4] == "http":
+                add = False
+            if word[0] == "@":
+                add = False
+            try:
+                if float(word) > 10:
+                    add = False
+            except ValueError:
+                pass
+            if add:
+                final.append(word)
+        return final
+        # words = [word for word in word_list if
+        #          not (word[:4] == "http" or word[0] == "@")
+        #          ]
+        # tmp = [word for word in words if word.isdigit()]
+        # print(tmp)
+        # return words
 
 
 if __name__ == "__main__":
