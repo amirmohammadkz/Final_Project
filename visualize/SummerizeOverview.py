@@ -24,7 +24,7 @@ class Sumerizer:
         plt.gca().grid(which='both', linestyle='--', axis='y')
         dist_folder_name = path.split("/")[-2]
         print(dist_folder_name)
-        dist = "../all_charts/new_version" + title + '/' + dist_folder_name + '.png'
+        dist = "../all_charts/version_2/" + title + '/' + dist_folder_name + '.png'
         plt.savefig(dist)
         plt.show()
 
@@ -45,6 +45,8 @@ class Sumerizer:
         plt.gca().minorticks_on()
         plt.gca().grid(which='major', color='red')
         plt.gca().grid(which='minor', linestyle='--')
+        dist = "../all_charts/version_2/tweet count.png"
+        plt.savefig(dist)
         plt.show()
 
     def generate_mean_tweet_words_count_chart(self, root_path=None):
@@ -144,7 +146,7 @@ class Sumerizer:
         file_names = self.dataset_reader.get_file_names()
         list = []
         maxi = 0
-        dist = "../all_charts/person_tweet_word_count/"
+        dist = "../all_charts/version_2/person_tweet_word_count/"
         for file_name in file_names:
             tweets = self.dataset_reader.read_file(file_name)
             for tweet in tweets:
