@@ -24,7 +24,7 @@ class Sumerizer:
         plt.gca().grid(which='both', linestyle='--', axis='y')
         dist_folder_name = path.split("/")[-2]
         print(dist_folder_name)
-        dist = "../all_charts/" + title + '/' + dist_folder_name + '.png'
+        dist = "../all_charts/new_version" + title + '/' + dist_folder_name + '.png'
         plt.savefig(dist)
         plt.show()
 
@@ -163,9 +163,9 @@ class Sumerizer:
 
 
 if __name__ == "__main__":
-    summerizer = Sumerizer(DatasetReader("../datasets"))
+    summerizer = Sumerizer(DatasetReader("../datasets_V2"))
    # summerizer.generate_person_tweet_count_chart()
-   # summerizer.generate_word_of_each_tweet_chart()
+    summerizer.generate_word_of_each_tweet_chart()
    # summerizer.generate_person_word_count_chart(root_path='../tfidf/bow1/')
    # summerizer.generate_person_unique_word_count_chart(root_path='../tfidf/bow1/')
    # summerizer.generate_unique_words_count_chart(root_path="../bows")
