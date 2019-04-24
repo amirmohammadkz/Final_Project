@@ -22,7 +22,7 @@ class WordCountMaker:
 
 
 if __name__ == "__main__":
-    root = "../tfidf/bow1/E_remove_extra"
+    root = "../tfidf/bow1/G_remove_unrelated"
     dataset_reader = DatasetReader(root)
     print("bow read")
     wordCountMaker = WordCountMaker()

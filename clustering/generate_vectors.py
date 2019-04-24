@@ -1,7 +1,7 @@
 import os
 import time
 
-from Kmeans_new.OneHotEncoder import OneHotGenerator
+from clustering.OneHotEncoder import OneHotGenerator
 from preprocess import DatasetReader
 import numpy as np
 from sklearn.cluster import KMeans
@@ -10,11 +10,11 @@ import pandas as pd
 if __name__ == "__main__":
     start = time.time()
     one_hot_encoder = OneHotGenerator()
-    one_hot = one_hot_encoder.make_one_hot("../tfidf/bow1/E_remove_extra/word_count.pkl", 200)
+    one_hot = one_hot_encoder.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl", 200)
     print("making_one_hot:{} sec".format(time.time() - start))
     start = time.time()
     one_hot_list_size = len(one_hot)
-    dataset_reader = DatasetReader("../tfidf/bow1/E_remove_extra")
+    dataset_reader = DatasetReader("../tfidf/bow1/G_remove_unrelated")
     file_names = dataset_reader.get_file_names()
     print("initializing loop:{} sec".format(time.time() - start))
     start = time.time()

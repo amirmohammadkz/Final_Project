@@ -46,6 +46,8 @@ if __name__ == "__main__":
     root_input = "../ngrams"
     dataset_reader = DatasetReader(root_input)
     for category in dataset_reader.get_nested_file_names():
+        if not ("bow1" in category[0] and "F_" in category[0]):
+            continue
         root_path = category[0]
         print("working on :")
         print(root_path)

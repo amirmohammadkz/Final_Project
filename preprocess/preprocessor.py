@@ -73,6 +73,7 @@ class Preprocessor:
                 word not in [" ", "نیز", "در", "با", "ترین", "تر", "برای", "از", "به", "را", "رو"]]
 
     def remove_unrelated(self, word_list):
+        # todo: co/ must be deleted
         final = []
         for word in word_list:
             add = True

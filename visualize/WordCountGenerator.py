@@ -66,9 +66,12 @@ if __name__ == "__main__":
             print(directory + ": " + name.split(".")[0])
             table_name = path_tuple[0][len(root_input):].replace("\\", "_").replace("/", "_") + "_" + name.split(".")[0]
             if not Path(directory + "\\" + table_name + ".png").exists():
-                print(directory + "\\" + table_name + ".png")
-                print(os.path.isfile(directory + "/" + table_name))
-                word_count_generator.generate_full_chart(table_name, name_file, items, value, directory)
+                try:
+                    print(directory + "\\" + table_name + ".png")
+                    print(os.path.isfile(directory + "/" + table_name))
+                    word_count_generator.generate_full_chart(table_name, name_file, items, value, directory)
+                except Exception as e:
+                    print(e)
         # for item in items:
         #     name_file = name_file.sort_values(by=[item], ascending=False)
         #     print(name_file.iloc[:value])

@@ -1,6 +1,6 @@
 import os
 
-from Kmeans_new.OneHotEncoder import OneHotGenerator
+from clustering.OneHotEncoder import OneHotGenerator
 from preprocess import DatasetReader
 import matplotlib.pyplot as plt
 import numpy as np
@@ -11,6 +11,10 @@ from sklearn.decomposition import PCA
 import matplotlib.cm as cm
 
 if __name__ == "__main__":
+    dataset_reader = DatasetReader("../generalDF")
+    data = dataset_reader.read_pkl_file("one_hot_words_df.pkl")
+    # print(data.columns[2:])
+    columns = data.columns[2:]
     dataset_reader = DatasetReader("../one_hots")
     all_names = dataset_reader.get_file_names()
     for file_name in all_names:
@@ -37,8 +41,7 @@ if __name__ == "__main__":
                                    , columns=['principal component 1', 'principal component 2'])
 
         finalDF = pd.concat([data['name'], principalDf], axis=1)
-
-        print(finalDF)
+        # print(finalDF)
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(1, 1, 1)
         ax.set_xlabel('Principal Component 1', fontsize=15)
@@ -48,10 +51,10 @@ if __name__ == "__main__":
         # colors = ['r', 'g', 'b', 'r', 'g', 'b', 'r', 'g', 'b', 'r', 'g', 'b', 'b']
         colors = cm.rainbow(np.linspace(0, 1, len(targets)))
         # for i in finalDF['principal component 1']:
-            # print(i)
+        # print(i)
         for target, pc1, pc2, color in zip(targets, finalDF['principal component 1'],
                                            finalDF['principal component 2'], colors):
-            ax.scatter(pc1, pc2, s=50, label=target,color = color)
+            ax.scatter(pc1, pc2, s=50, label=target, color=color)
             # print(finalDF)
         ax.legend()
         ax.grid()
@@ -64,3 +67,6 @@ if __name__ == "__main__":
                 os.makedirs(path)
 
         plt.savefig("{}/{}.png".format(path, file_name.split(".")[0]))
+
+    data = pd.DataFrame(pca.components_, columns=columns, index=['PC-1', 'PC-2'])
+    print(data.loc["PC-1"])

@@ -1,3 +1,5 @@
+import os
+
 import numpy as np
 import pandas as pd
 
@@ -39,7 +41,8 @@ class OneHotGenerator:
 
 if __name__ == "__main__":
     oneHotGenerator = OneHotGenerator()
-    x = oneHotGenerator.make_one_hot("../tfidf/bow1/E_remove_extra/word_count.pkl")
-    print(oneHotGenerator.get_one_hot_vector("سلام"))
-    print(oneHotGenerator.get_one_hot_vector("بستن"))
-    print(oneHotGenerator.get_one_hot_vector("شیشسیشسیشسیشسیسش"))
+    x = oneHotGenerator.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl",200)
+    path = "../generalDF/"
+    if not os.path.exists(path):
+        os.makedirs(path)
+    x.to_pickle(path+"one_hot_words_df.pkl")
