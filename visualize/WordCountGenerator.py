@@ -6,7 +6,7 @@ from bidi.algorithm import get_display
 import matplotlib.pyplot as plt
 import arabic_reshaper
 
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 
 
 class WordCountGenerator:
@@ -45,38 +45,3 @@ class WordCountGenerator:
             print(path + "/" + table_name + ".png")
             plt.savefig(path + "/" + table_name + ".png")
             plt.close('all')
-
-
-if __name__ == "__main__":
-    root_input = "../tfidf"
-    root_output = "../all_charts"
-
-    dataset_reader = DatasetReader(root_input)
-    # name = [0]
-    value = 100
-
-    for path_tuple in dataset_reader.get_nested_file_names():
-        dataset_reader.set_root_path(path_tuple[0])
-        for name in path_tuple[1]:
-            name_file = dataset_reader.read_pkl_file(name)
-            items = ["count", "TF", "IDF", "TFIDF"]
-            word_count_generator = WordCountGenerator()
-            directory = root_output + path_tuple[0][len(root_input):]
-            print("generating in:")
-            print(directory + ": " + name.split(".")[0])
-            table_name = path_tuple[0][len(root_input):].replace("\\", "_").replace("/", "_") + "_" + name.split(".")[0]
-            if not Path(directory + "\\" + table_name + ".png").exists():
-                try:
-                    print(directory + "\\" + table_name + ".png")
-                    print(os.path.isfile(directory + "/" + table_name))
-                    word_count_generator.generate_full_chart(table_name, name_file, items, value, directory)
-                except Exception as e:
-                    print(e)
-        # for item in items:
-        #     name_file = name_file.sort_values(by=[item], ascending=False)
-        #     print(name_file.iloc[:value])
-        #     print("all other" + str(name_file.iloc[value:][item].sum()))
-        #     word_count_generator = WordCountGenerator()
-        #     word_count_generator.generate_word_count_graph(name, name_file.iloc[:value]["word"],
-        #                                                    name_file.iloc[:value][item])
-        # word_count_generator.generate_word_count_raph(dic)

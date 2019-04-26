@@ -1,4 +1,4 @@
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 from visualize.WordCountGenerator import WordCountGenerator
 
 if __name__ == "__main__":

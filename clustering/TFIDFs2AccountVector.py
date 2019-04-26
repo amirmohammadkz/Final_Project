@@ -2,19 +2,19 @@ import os
 import time
 
 from clustering.OneHotEncoder import OneHotGenerator
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 import numpy as np
 from sklearn.cluster import KMeans
 import pandas as pd
 
-if __name__ == "__main__":
+
+def convert(root_input, root_output, word_count_path, one_hot_tresh):
     start = time.time()
     one_hot_encoder = OneHotGenerator()
-    one_hot = one_hot_encoder.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl", 200)
+    one_hot = one_hot_encoder.make_one_hot(word_count_path, one_hot_tresh)
     print("making_one_hot:{} sec".format(time.time() - start))
     start = time.time()
-    one_hot_list_size = len(one_hot)
-    dataset_reader = DatasetReader("../tfidf/bow1/G_remove_unrelated")
+    dataset_reader = DatasetReader(root_input)
     file_names = dataset_reader.get_file_names()
     print("initializing loop:{} sec".format(time.time() - start))
     start = time.time()
@@ -46,7 +46,7 @@ if __name__ == "__main__":
             print(all_df)
             print("time taked for {}:{} sec".format(file_name, time.time() - start))
             start = time.time()
-        path = "../one_hots"
+        path = root_output
         if not os.path.exists(path):
             os.makedirs(path)
         all_df.to_pickle("{}/{}.pkl".format(path, column))
@@ -56,3 +56,11 @@ if __name__ == "__main__":
         # print(subtracted[['word', 'count_x']].describe())
         # print("left inner size: ")
         # print(merged2.describe())
+
+
+if __name__ == "__main__":
+    w_c_path = "../tfidf/bow1/G_remove_unrelated/word_count.pkl"
+    o_h_tresh = 200
+    r_input = "../tfidf/bow1/G_remove_unrelated"
+    r_output = "../one_hots"
+    convert(r_input, r_output, w_c_path, o_h_tresh)

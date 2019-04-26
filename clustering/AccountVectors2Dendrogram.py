@@ -2,13 +2,14 @@ import os
 
 from scipy.cluster import hierarchy
 
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.cluster import KMeans
 
-if __name__ == "__main__":
-    dataset_reader = DatasetReader("../one_hots")
+
+def convert(root_input, root_output):
+    dataset_reader = DatasetReader(root_input)
     all_names = dataset_reader.get_file_names()
     for file_name in all_names:
         print(file_name, "#############################")
@@ -25,20 +26,8 @@ if __name__ == "__main__":
         plt.grid()
 
         print(names)
-        #
-        #     hierarchy.set_link_color_palette(['m', 'c', 'y', 'k'])
-        #     fig, axes = plt.subplots(1, 2, figsize=(8, 3))
-        #     dn1 = hierarchy.dendrogram(Z, ax=axes[0], above_threshold_color='y',
-        #
-        #                                orientation='top')
-        #     dn2 = hierarchy.dendrogram(Z, ax=axes[1],
-        #                                above_threshold_color='#bcbddc',
-        #
-        #                                orientation='right')
-        # hierarchy.set_link_color_palette(None)  # reset to default after use
-        # plt.show()
         table_name = file_name.split(".")[0]
-        path = "../all_charts/dendrogram"
+        path = root_output
         if path is None:
             plt.show()
         else:
@@ -47,3 +36,9 @@ if __name__ == "__main__":
             print(path + "/" + table_name + ".png")
             plt.savefig(path + "/" + table_name + ".png")
             plt.close('all')
+
+
+if __name__ == "__main__":
+    r_input = "../one_hots"
+    r_output = "../all_charts/dendrogram"
+    convert(r_input, r_output)

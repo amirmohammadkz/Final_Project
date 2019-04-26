@@ -1,7 +1,7 @@
 import math
 from hazm import *
 
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

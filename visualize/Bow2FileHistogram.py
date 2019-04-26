@@ -3,10 +3,11 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from preprocess import DatasetReader
+from preprocess.dataset_reader import DatasetReader
 
-if __name__ == "__main__":
-    dataset_reader = DatasetReader("../ngrams/bow1/")
+
+def convert(root_input, root_output):
+    dataset_reader = DatasetReader(root_input)
     print(dataset_reader.get_nested_file_names())
     cat_lines = {}
     for person in dataset_reader.get_nested_file_names()[0][1]:
@@ -19,11 +20,12 @@ if __name__ == "__main__":
     print(cat_lines)
 
     for person, data in cat_lines.items():
+        plt.figure(figsize=(10, 11))
         plt.title(person)
         plt.plot(data[1])
         plt.xticks(np.arange(len(data[0])), data[0])
         plt.setp(plt.gca().get_xticklabels(), rotation=30, horizontalalignment='right')
-        path = "../all_charts/first_step"
+        path = root_output
         plt.grid()
         if path is None:
             plt.show()
@@ -36,3 +38,7 @@ if __name__ == "__main__":
         # plt.show()
         print(person)
         print(data)
+
+
+if __name__ == "__main__":
+    pass
