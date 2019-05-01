@@ -46,8 +46,8 @@ class OneHotGenerator:
 
 if __name__ == "__main__":
     oneHotGenerator = OneHotGenerator()
-    x = oneHotGenerator.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl", 200)
-    path = "../generalDF/"
+    x = oneHotGenerator.make_one_hot("../generalDF/word_counts/tfidf/bow1/G_remove_unrelated.pkl", 10)
+    path = "../generalDF/one_hot_words_df/bow1/"
     if not os.path.exists(path):
         os.makedirs(path)
-    x.to_pickle(path + "one_hot_words_df.pkl")
+    x.to_pickle(path + "G_remove_unrelated.pkl")
