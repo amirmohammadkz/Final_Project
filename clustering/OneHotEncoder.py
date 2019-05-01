@@ -32,6 +32,11 @@ class OneHotGenerator:
         on_hot_df = row.drop(['word', 'count'], axis=1)
         return np.array(on_hot_df)[0]
 
+    def get_one_hot_vector_v2(self, word):
+        row = self.get_one_hot_row(word)
+        on_hot_df = row.drop(['word', 'count'], axis=1)
+        return on_hot_df
+
     def save_one_hot_df(self, dest):
         self.oneHotWordsDF.to_pickle(dest)
 
@@ -41,8 +46,8 @@ class OneHotGenerator:
 
 if __name__ == "__main__":
     oneHotGenerator = OneHotGenerator()
-    x = oneHotGenerator.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl",200)
+    x = oneHotGenerator.make_one_hot("../tfidf/bow1/G_remove_unrelated/word_count.pkl", 200)
     path = "../generalDF/"
     if not os.path.exists(path):
         os.makedirs(path)
-    x.to_pickle(path+"one_hot_words_df.pkl")
+    x.to_pickle(path + "one_hot_words_df.pkl")

@@ -57,6 +57,36 @@ def convert(root_input, root_output, word_count_path, one_hot_tresh):
         # print("left inner size: ")
         # print(merged2.describe())
 
+    def convert_v2(root_input, root_output, word_count_path, one_hot_tresh):
+        start = time.time()
+        one_hot_encoder = OneHotGenerator()
+        one_hot = one_hot_encoder.make_one_hot(word_count_path, one_hot_tresh)
+        print("making_one_hot:{} sec".format(time.time() - start))
+        start = time.time()
+        dataset_reader = DatasetReader(root_input)
+        file_names = dataset_reader.get_file_names()
+        print("initializing loop:{} sec".format(time.time() - start))
+        start = time.time()
+        for column in ['TF', 'IDF', 'TFIDF']:
+            all_df = pd.DataFrame(columns=["name"] + list(one_hot.columns[2:]))
+            for file_name in file_names:
+                if file_name == "word_count.pkl":
+                    continue
+                person_tfidf = dataset_reader.read_pkl_file(file_name)
+                merged = person_tfidf.merge(one_hot, how="inner", on=['word'])
+                # print(len(person_tfidf))
+                # print(len(merged))
+                # print(len(subtracted))
+                # print("inner size: ")
+                merged['one_hot'] = merged.apply(lambda row: np.array(row[6:]) * row[column], axis=1)
+                # print(merged[merged['word'] == "سلام"]['word', 'TF'])
+                # x = np.where(merged[merged['word'] == "سلام"]['one_hot'].values[0] != 0.0)
+                # print(merged[merged['word'] == "سلام"]['one_hot'].values[0][x])
+                # todo: check unknown
+                subtracted = person_tfidf[~person_tfidf['word'].isin(merged['word'])]
+                unknown_TF = subtracted['TF'].sum(axis=0)
+                unknown_vector = one_hot_encoder.get_one_hot_vector_v2("unknown_words") * unknown_TF
+
 
 if __name__ == "__main__":
     w_c_path = "../tfidf/bow1/G_remove_unrelated/word_count.pkl"

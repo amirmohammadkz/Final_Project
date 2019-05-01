@@ -7,15 +7,12 @@ import numpy as np
 from sklearn.cluster import KMeans
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
-from sklearn.decomposition import PCA, TruncatedSVD
+from sklearn.decomposition import PCA
 import matplotlib.cm as cm
 
-if __name__ == "__main__":
-    dataset_reader = DatasetReader("../generalDF")
-    data = dataset_reader.read_pkl_file("one_hot_words_df.pkl")
-    # print(data.columns[2:])
-    columns = data.columns[2:]
-    dataset_reader = DatasetReader("../one_hots")
+
+def convert(root_input, root_output):
+    dataset_reader = DatasetReader(root_input)
     all_names = dataset_reader.get_file_names()
     for file_name in all_names:
         data = dataset_reader.read_pkl_file(file_name)
@@ -33,7 +30,7 @@ if __name__ == "__main__":
         print(x.shape)
         # print(x)
 
-        pca = TruncatedSVD(n_components=2)
+        pca = PCA(n_components=2)
 
         principalComponents = pca.fit_transform(x)
         print(pca.explained_variance_ratio_)
@@ -41,7 +38,8 @@ if __name__ == "__main__":
                                    , columns=['principal component 1', 'principal component 2'])
 
         finalDF = pd.concat([data['name'], principalDf], axis=1)
-        # print(finalDF)
+
+        print(finalDF)
         fig = plt.figure(figsize=(8, 8))
         ax = fig.add_subplot(1, 1, 1)
         ax.set_xlabel('Principal Component 1', fontsize=15)
@@ -59,8 +57,7 @@ if __name__ == "__main__":
         ax.legend()
         ax.grid()
         # plt.show()
-        path = None
-        # path = "../all_charts/pca"
+        path = root_output
         if path is None:
             plt.show()
         else:
@@ -68,6 +65,14 @@ if __name__ == "__main__":
                 os.makedirs(path)
 
         plt.savefig("{}/{}.png".format(path, file_name.split(".")[0]))
+        # todo: use these comments
+        # x = [sum(pca.explained_variance_ratio_[:i]) for i in range(len(pca.explained_variance_ratio_))]
+        # plt.plot(x)
+        # plt.show()
 
-    data = pd.DataFrame(pca.components_, columns=columns, index=['PC-1', 'PC-2'])
-    print(data.loc["PC-1"])
+
+if __name__ == "__main__":
+    r_input = "../one_hots"
+    r_output = "../all_charts/pca"
+    convert(r_input, r_output)
+    pass
