@@ -2,6 +2,7 @@
 import tweepy
 import time
 from preprocess.dataset_reader import DatasetReader
+from random import randint
 
 
 def gat_tweets():
@@ -41,7 +42,7 @@ def gat_tweets():
     print(i)
 
 
-def data_random_patitioning(dataset_reader, root_path,tweets_count):
+def data_patitioning(dataset_reader, root_path,tweets_count):
     if root_path is not None:
         dataset_reader.set_root_path(root_path)
     file_names = dataset_reader.get_file_names()
@@ -60,6 +61,42 @@ def data_random_patitioning(dataset_reader, root_path,tweets_count):
                 i+=1
                 if i >= len(tweets):
                     break
+
+
+def data_random_patitioning(dataset_reader, root_path,tweets_count):
+    if root_path is not None:
+        dataset_reader.set_root_path(root_path)
+    file_names = dataset_reader.get_file_names()
+    for file_name in file_names:
+        indexs = []
+        tweets = dataset_reader.read_file(file_name)
+        for j in range(0,int(len(tweets)/tweets_count)):
+            dist_file_name = '../little_datasets/random/' + file_name.split('.')[0] + '_' + str(j) + '.txt'
+            file = open(dist_file_name,'w')
+            k = 0
+            while True:
+                random_index = randint(0,len(tweets)-1)
+                k+=1
+                if random_index not in indexs:
+                    indexs.append(random_index)
+                else:
+                    k-=1
+                if k == tweets_count:
+                    break
+            indexs.sort()
+            for index in indexs:
+                file.write(tweets[index])
+                file.write('\n\n')
+            for t in range(len(indexs),0):
+                tweets.remove(tweets[indexs[t]])
+
+        dist_file_name = '../little_datasets/random/' + file_name.split('.')[0] + '_' + str(int(len(tweets)/tweets_count)+1) + '.txt'
+        file = open(dist_file_name, 'w')
+        for tweet in tweets:
+            file.write(tweet)
+            file.write('\n\n')
+        print(file_name.split('.')[0], ': OK')
+
 
 
 def data_general_patitioning(dataset_reader, root_path, tweets_count):
@@ -87,5 +124,5 @@ if __name__ == "__main__":
     #gat_tweets()
     dataset_reader = DatasetReader("../datasets_V2")
     data_random_patitioning(dataset_reader, "../datasets_V2",200)
-    data_general_patitioning(dataset_reader, "../datasets_V2", 200)
+    #data_general_patitioning(dataset_reader, "../datasets_V2", 200)
 
